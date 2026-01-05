@@ -1,0 +1,92 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+/static/
+/media/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+
+# Documentation
+docs/_build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# Security: Exclude environment and secrets files
+.env
+.env.*
+*.env
+*.env.*
+*.secret
+secrets*
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.cert
+*.csr
+*.gpg
+*.asc
+id_rsa*
+id_dsa*
+id_ecdsa*
+id_ed25519*
+*.aws/credentials
+*.aws/config
+*.npmrc
+*.pypirc
+*.netrc
+*.tfstate
+*.tfvars
+*.vault
+*.jks
+*.kdbx
+*.sqlite*
+*.db
+*.bak
+*.backup
+*.log
+
+# Other
+*.md
+LICENSE
+.editorconfig
+
+# License header templates (not needed in container)
+license_header/

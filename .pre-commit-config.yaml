@@ -1,0 +1,52 @@
+# Pre-commit hooks configuration
+# See https://pre-commit.com for more information
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: debug-statements
+      - id: mixed-line-ending
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.5.4
+    hooks:
+      - id: insert-license
+        name: insert-license-python
+        files: \.py$
+        args:
+          - --license-filepath
+          - license_header/mpl2_header.txt
+          - --comment-style
+          - "|#|"
+      - id: insert-license
+        name: insert-license-shell
+        files: \.sh$
+        args:
+          - --license-filepath
+          - license_header/mpl2_header.txt
+          - --comment-style
+          - "|#|"
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: 'v0.11.12'
+    hooks:
+      - id: ruff
+      - id: ruff
+        name: ruff-import-sorting
+        args: ["--select", "I", "--fix"]
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: |
+          (?x)^(
+            requirements/.*\.txt|
+            \.venv/.*
+          )$

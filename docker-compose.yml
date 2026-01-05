@@ -1,0 +1,90 @@
+services:
+  db:
+    image: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DATABASE}
+      MARIADB_USER: ${MARIADB_USER}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
+
+  redis:
+    image: redis
+    platform: linux/amd64
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 1s
+      retries: 5
+
+  web:
+    build:
+      context: .
+      args:
+        GIT_SHA: ${GIT_COMMIT:-latest}
+    image: mozmeao/orchestrator:${GIT_COMMIT_SHORT:-latest}
+    platform: linux/amd64
+    init: true
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "bash", "-c", "cat < /dev/null > /dev/tcp/web/8000"]
+      interval: 3s
+      timeout: 1s
+      retries: 10
+    command: ./bin/run-dev.sh
+
+  test:
+    image: mozmeao/orchestrator:${GIT_COMMIT_SHORT:-latest}
+    platform: linux/amd64
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: ./bin/run-tests.sh
+
+  test-image:
+    image: mozmeao/orchestrator:${GIT_COMMIT_SHORT:-latest}
+    platform: linux/amd64
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: ./bin/run-tests.sh
+
+  builder:
+    build:
+      context: .
+      target: builder
+    image: mozmeao/orchestrator:builder-${GIT_COMMIT_SHORT:-latest}
+    platform: linux/amd64
+
+  compile-requirements:
+    image: mozmeao/orchestrator:builder-${GIT_COMMIT_SHORT:-latest}
+    platform: linux/amd64
+    command: ./bin/compile-requirements.sh
+    volumes:
+      - .:/app
