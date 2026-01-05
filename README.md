@@ -1,15 +1,15 @@
 # Orchestrator
-===========
+
 
 A Django application for various orchestration purposes across the MarTech stack.
 
 ## Purpose
-----
+
 
 Orchestrator provides a centralized platform for managing marketing technology workflows at Mozilla. It streamlines operations by:
 
 ## Quick Start
-----
+
 
 ```bash
 # Setup environment
@@ -21,7 +21,7 @@ make up
 ```
 
 ## Common Commands
-----
+
 
 ```bash
 make help              # Show all commands
@@ -32,6 +32,6 @@ make shell             # Access app container
 ```
 
 ## License
-----
+
 
 This software is licensed under the [Mozilla Public License 2.0](https://www.mozilla.org/MPL/2.0/) For more information, read the file LICENSE.
